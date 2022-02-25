@@ -16,7 +16,9 @@
     @apply w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600;
   }
 }
-html {
+
+body {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  overflow-x: hidden;
 }
