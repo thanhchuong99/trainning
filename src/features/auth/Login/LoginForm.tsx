@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import LogoLogin from "../../../assets/LogoLogin.svg";
+import { ACCESS_TOKEN } from "../../../constant";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { authActions, selectIslogged, selectLogging } from "../authSlice";
 
@@ -35,7 +36,7 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
-  const isLogged = useAppSelector(selectIslogged);
+  const isLogged = Boolean(localStorage.getItem(ACCESS_TOKEN));
   const isLogging = useAppSelector(selectLogging);
 
   const dispatch = useAppDispatch();
