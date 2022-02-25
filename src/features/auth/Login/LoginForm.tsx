@@ -6,7 +6,7 @@ import * as yup from "yup";
 import LogoLogin from "../../../assets/LogoLogin.svg";
 import { ACCESS_TOKEN } from "../../../constant";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { authActions, selectIslogged, selectLogging } from "../authSlice";
+import { authActions, selectLogging } from "../authSlice";
 
 // yup.setLocale({
 //   mixed: {
