@@ -72,7 +72,11 @@ export default function TodoList() {
               <Tag color="gray">Low</Tag>
             </Select.Option>
           </Select>
-          <Button type="primary" onClick={handleAddButtonClick}>
+          <Button
+            type="primary"
+            style={{ backgroundColor: " #1890ff" }}
+            onClick={handleAddButtonClick}
+          >
             Add
           </Button>
         </Input.Group>

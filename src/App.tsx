@@ -13,8 +13,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/" element={<PrivateRoute />}>
-          <Route path="/" element={<App />}>
-            <Route path="admin" element={<AdminLayout />} />
+          <Route path="/" element={<AdminLayout />}>
             <Route path="todo" element={<TodoApp />}></Route>
           </Route>
         </Route>

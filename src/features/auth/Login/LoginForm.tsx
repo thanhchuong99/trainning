@@ -1,10 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import LogoLogin from "../../../assets/LogoLogin.svg";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { authActions, selectIslogged } from "../authSlice";
+import { authActions, selectIslogged, selectLogging } from "../authSlice";
 
 // yup.setLocale({
 //   mixed: {
@@ -35,11 +36,18 @@ const LoginForm = () => {
   });
   const navigate = useNavigate();
   const isLogged = useAppSelector(selectIslogged);
+  const isLogging = useAppSelector(selectLogging);
+
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     dispatch(authActions.login(data));
   };
-  // isLogged && navigate("/");
+  useEffect(() => {
+    if (isLogged) {
+      navigate("/");
+    }
+  }, [isLogged]);
+
   return (
     <div className="flex bg-gray-100 justify-center h-full mt-[40px]">
       <div className="px-8 py-6 mt-8 w-[600px] h-full shadow-md text-left bg-white ">
@@ -87,7 +95,7 @@ const LoginForm = () => {
             </div>
             <div className="flex items-baseline justify-between">
               <button className="px-6 py-2 mt-4 text-16 text-white bg-blue-600 rounded-lg hover:bg-blue-900 flex items-center">
-                {isLogged && (
+                {isLogging && (
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg"
