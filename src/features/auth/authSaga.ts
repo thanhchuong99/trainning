@@ -1,7 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, delay, fork, put, take } from "redux-saga/effects";
 import { ACCESS_TOKEN } from "../../constant";
-import { authActions, AuthState, LoginPayload } from "./authSlice";
+import { authActions, LoginPayload } from "./authSlice";
 
 function* handleLogin(payload: LoginPayload) {
   yield delay(500);
