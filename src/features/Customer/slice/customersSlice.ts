@@ -1,4 +1,3 @@
-import { SatelliteAltOutlined } from "@mui/icons-material";
 import { createSlice } from "@reduxjs/toolkit";
 import { Customer } from "../../../models";
 import { RootState } from "../../../redux/store";
