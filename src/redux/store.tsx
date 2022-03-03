@@ -2,13 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import authReducer from "../features/auth/authSlice";
+import customerReducer from "../features/Customer/slice/customerSlice";
+import customersReducer from "../features/Customer/slice/customersSlice";
 import filtersSlice from "../features/TodoApp/Filters/FiltersSlice";
 import todoListSlice from "../features/TodoApp/TodoList/todoListSlice";
 import rootSaga from "../saga/rootSaga";
-import { createBrowserHistory } from "history";
-import customersReducer from "../features/Customer/slice/customersSlice";
-import customerReducer from "../features/Customer/slice/customerSlice";
-const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: {
