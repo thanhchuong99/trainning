@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Form, Input, Row, Col, Skeleton, Typography, Button } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect } from "react";
@@ -18,6 +19,7 @@ export function CustomerDeTail() {
 
   useEffect(() => {
     dispatch({ type: GET_CUSTOMER_BY_ID, payload: id });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     form.setFieldsValue(initialValue);

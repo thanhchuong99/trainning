@@ -88,7 +88,7 @@ const CustomerModal: React.FunctionComponent<ICustomerModalProps> = (props) => {
             name="phone"
             rules={[
               {
-                pattern: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
+                pattern: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
               },
             ]}
           >
