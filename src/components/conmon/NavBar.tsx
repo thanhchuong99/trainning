@@ -34,15 +34,22 @@ const NavBar = () => {
                 TodoApp
               </Link>
             </div>
+            <div className="hidden md:flex items-center space-x-1">
+              <Link
+                to="customers"
+                className="py-4 px-6 text-black text-20 hover:text-primary-blue hover:border-b-4 hover:border-primary-blue font-semibold "
+              >
+                CrudApp
+              </Link>
+            </div>
           </div>
           <div className="hidden md:flex items-center space-x-3 ">
-            <Link
-              to="login"
+            <button
               onClick={handleLogout}
               className="py-2 px-2 text-20 font-medium text-gray-500 rounded hover:bg-primary-blue hover:text-white transition duration-300"
             >
               Log Out
-            </Link>
+            </button>
           </div>
           <div className="md:hidden flex items-center">
             <button

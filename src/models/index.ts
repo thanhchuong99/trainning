@@ -1,4 +1,4 @@
 export * from "./conmon";
 export * from "./city";
-export * from "./student";
+export * from "./customer";
 export * from "./user";

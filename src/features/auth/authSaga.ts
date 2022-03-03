@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, delay, fork, put, take } from "redux-saga/effects";
 import { ACCESS_TOKEN } from "../../constant";
+import { history } from "../../utils";
 import { authActions, LoginPayload } from "./authSlice";
 
 function* handleLogin(payload: LoginPayload) {
@@ -18,6 +19,7 @@ function* handleLogout() {
 
   localStorage.removeItem(ACCESS_TOKEN);
   //redirect to login
+  history.push("login");
 }
 function* watchLoginFlow() {
   while (true) {

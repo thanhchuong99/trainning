@@ -1,10 +1,10 @@
-export interface Student {
+export interface Customer {
   id?: string;
   name: string;
-  age: number;
-  mark: number;
-  gender: "male" | "female";
+  email: string;
+  phone: number;
   city: string;
+  status: boolean;
   createAt?: number;
   updateAt?: number;
 }
