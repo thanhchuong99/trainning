@@ -31,8 +31,9 @@ const CustomerTable = () => {
   };
 
   //Selector
-  const loading = useAppSelector(selectCustomerLoading);
+  const loading = useAppSelector(selectCustomerLoading) || false;
   const listCustomer = useAppSelector(selectCustomers);
+  console.log(listCustomer);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(customerActions.setCustomerSlice({}));
@@ -44,7 +45,6 @@ const CustomerTable = () => {
   };
   const onSearchChange = (e: ChangeEvent<HTMLInputElement>) =>
     dispatch({ type: FILTER_CUSTOMER, payload: e.target.value });
-
   const columns: any = [
     {
       key: "id",

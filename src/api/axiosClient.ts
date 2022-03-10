@@ -1,14 +1,19 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+let authTokens = localStorage.getItem("access_token");
 
 const axiosClient = axios.create({
-  baseURL: "https://training-hdwebsoft.herokuapp.com/api/",
-
+  baseURL: "https://trainning-auth.herokuapp.com/api",
   headers: { "Content-Type": "application/json" },
 });
 // Add a request interceptor
-axios.interceptors.request.use(
+axiosClient.interceptors.request.use(
   function (config: AxiosRequestConfig) {
-    // Do something before request is sent
+    authTokens = localStorage.getItem("access_token");
+
+    config.headers = {
+      Authorization: `Bearer ${authTokens}`,
+      Accept: "application/json",
+    };
     return config;
   },
   function (error) {
@@ -17,16 +22,32 @@ axios.interceptors.request.use(
   },
 );
 // Add a response interceptor
-axios.interceptors.response.use(
+axiosClient.interceptors.response.use(
   function (response: AxiosResponse) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;
   },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+  async function (error) {
+    // const originalRequest = error.config;
+    // if (error.response.status === 401 && !originalRequest._retry) {
+    //   originalRequest._retry = true;
+    //   let refreshToken = localStorage.getItem("refresh_token");
+    //   console.log(refreshToken);
+    //   if (refreshToken) {
+    //     const access_token = await authApi.refreshToken(refreshToken);
+    //     error.response.config.headers["Authorization"] =
+    //       "Bearer " + access_token;
+    //     localStorage.setItem("access_token", access_token);
+    //   }
+    //   return axiosClient(originalRequest);
+    // }
     return Promise.reject(error);
   },
 );
 export default axiosClient;
+export const axiosPrivate = axios.create({
+  baseURL: "https://trainning-auth.herokuapp.com/api",
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
+});

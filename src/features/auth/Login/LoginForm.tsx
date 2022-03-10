@@ -1,12 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import LogoLogin from "../../../assets/LogoLogin.svg";
-import { ACCESS_TOKEN } from "../../../constant";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { authActions, selectLogging } from "../authSlice";
+import { useAuth } from "../Context/authContext";
 
 // yup.setLocale({
 //   mixed: {
@@ -18,12 +16,12 @@ import { authActions, selectLogging } from "../authSlice";
 //   },
 // });
 interface IFormInputs {
-  email: string;
+  username: string;
   password: string;
 }
 const schema = yup
   .object({
-    email: yup.string().trim().required().email(),
+    username: yup.string().trim().required().email(),
     password: yup.string().trim().required().min(6),
   })
   .required();
@@ -36,20 +34,23 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
-  const isLogged = Boolean(localStorage.getItem(ACCESS_TOKEN));
-  const isLogging = useAppSelector(selectLogging);
-
-  const dispatch = useAppDispatch();
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    dispatch(authActions.login(data));
+  let location = useLocation();
+  let stateLocation = location.state as {
+    from: { pathname: string };
   };
+  let from = stateLocation?.from?.pathname || "/";
+
+  const { loading, signIn } = useAuth();
+  const onSubmit: SubmitHandler<IFormInputs> = ({ username, password }) => {
+    signIn(username, password);
+  };
+  const isLogged = localStorage.getItem("access_token");
   useEffect(() => {
     if (isLogged) {
-      navigate("/");
+      navigate(from);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged]);
-
   return (
     <div className="flex bg-gray-100 justify-center h-full mt-[40px]">
       <div className="px-8 py-6 mt-8 w-[600px] h-full shadow-md text-left bg-white ">
@@ -63,19 +64,21 @@ const LoginForm = () => {
           <div className="mt-4">
             <div>
               <label
-                className={`block ${errors.email && "text-red-600"}`}
+                className={`block ${errors.username && "text-red-600"}`}
                 htmlFor="email"
               >
-                Email
+                User Name
               </label>
               <input
                 type="text"
-                placeholder="Email"
-                className={`input-form ${errors.email && "focus:ring-red-600"}`}
-                {...register("email")}
-                name="email"
+                placeholder="UserName"
+                className={`input-form ${
+                  errors.username && "focus:ring-red-600"
+                }`}
+                {...register("username")}
+                name="username"
               />
-              <p className="error-message">{errors.email?.message}</p>
+              <p className="error-message">{errors.username?.message}</p>
             </div>
             <div className="mt-4">
               <label
@@ -97,7 +100,7 @@ const LoginForm = () => {
             </div>
             <div className="flex items-baseline justify-between">
               <button className="px-6 py-2 mt-4 text-16 text-white bg-blue-600 rounded-lg hover:bg-blue-900 flex items-center">
-                {isLogging && (
+                {loading && (
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg"

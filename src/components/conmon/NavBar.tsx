@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import HdwebsoftLogo from "../../assets/HdwebsoftLogo.svg";
-import { authActions } from "../../features/auth/authSlice";
+import { useAuth } from "../../features/auth/Context/authContext";
 import { useAppDispatch } from "../../redux/store";
 const NavBar = () => {
   const [isOpenMenu, setOpenMenu] = useState(false);
@@ -9,8 +9,9 @@ const NavBar = () => {
     setOpenMenu(!isOpenMenu);
   };
   const dispatch = useAppDispatch();
+  const { signOut } = useAuth();
   const handleLogout = () => {
-    dispatch(authActions.logout());
+    signOut();
   };
   return (
     <nav className="bg-white shadow-md">

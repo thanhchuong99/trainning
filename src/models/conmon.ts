@@ -17,3 +17,13 @@ export interface ListParams {
 
   [key: string]: any;
 }
+export interface ResponseData<> {
+  status: number;
+  error: boolean;
+  message: string;
+  data?: any;
+}
+export interface LoginResponse {
+  access_token: string;
+  refreshToken: string;
+}
