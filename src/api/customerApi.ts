@@ -1,10 +1,9 @@
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Customer, ListResponse, ListParams } from "../models";
 import axiosClient from "./axiosClient";
 const url = "/users";
 
 const customerApi = {
-  async getAll(params?: ListParams): Promise<ListResponse<Customer>> {
+  async getAll(params?: ListParams): Promise<Customer[]> {
     return axiosClient.get(url, { params });
   },
   async getById(id: string): Promise<Customer> {

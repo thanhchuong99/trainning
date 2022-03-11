@@ -14,8 +14,6 @@ type authContextProps = {
   isLogged: boolean;
   loading: boolean;
   verifyTokenEffect: () => void;
-  auth: {};
-  setAuth: React.Dispatch<React.SetStateAction<{}>>;
 };
 const AuthContext = createContext<authContextProps | null>(null);
 export function useAuth() {
@@ -31,13 +29,14 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     !!localStorage.getItem("access_token"),
   );
   let dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("access_token");
-  const [auth, setAuth] = useState({});
+  const [loading, setLoading] = useState(false);
   const verifyTokenEffect = async () => {
+    const token = localStorage.getItem("access_token");
+
     try {
       if (token) {
         const response: ResponseData = await authApi.checkAuth(token);
+        console.log(response);
         if (response.error) {
           dispatch(
             errorActions.setError({
@@ -48,10 +47,15 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           );
           setIsLogged(false);
         } else {
+          console.log(isLogged);
+
           setIsLogged(true);
         }
+      } else {
+        setIsLogged(false);
       }
     } catch (e: any) {
+      setIsLogged(false);
       dispatch(
         errorActions.setError({
           message: "Login Invalid",
@@ -62,9 +66,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
     setLoading(false);
   };
-  useEffect(() => {
-    verifyTokenEffect();
-  }, [isLogged]);
 
   async function signIn(username: string, password: string) {
     setLoading(true);
@@ -108,8 +109,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     isLogged,
     loading,
     verifyTokenEffect,
-    auth,
-    setAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

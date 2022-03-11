@@ -40,17 +40,19 @@ const LoginForm = () => {
   };
   let from = stateLocation?.from?.pathname || "/";
 
-  const { loading, signIn } = useAuth();
+  const { isLogged, loading, signIn, verifyTokenEffect } = useAuth();
   const onSubmit: SubmitHandler<IFormInputs> = ({ username, password }) => {
     signIn(username, password);
   };
-  const isLogged = localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token");
   useEffect(() => {
     if (isLogged) {
+      verifyTokenEffect();
       navigate(from);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged]);
+
   return (
     <div className="flex bg-gray-100 justify-center h-full mt-[40px]">
       <div className="px-8 py-6 mt-8 w-[600px] h-full shadow-md text-left bg-white ">

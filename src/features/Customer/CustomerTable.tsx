@@ -11,14 +11,17 @@ import {
   Tooltip,
 } from "antd";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
+import customerApi from "../../api/customerApi";
 import { Customer } from "../../models";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { history } from "../../utils";
+import { handleError } from "../../utils/handleError";
 import CustomerModal from "./CustomerModal";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { customerActions } from "./slice/customerSlice";
 import { selectCustomerLoading, selectCustomers } from "./slice/customersSlice";
 import { DELETE_CUSTOMER_BY_ID, FILTER_CUSTOMER, GET_CUSTOMERS } from "./types";
-
 const CustomerTable = () => {
   const { Search } = Input;
 
@@ -29,15 +32,27 @@ const CustomerTable = () => {
   const showModal = () => {
     setIsModalVisible(true);
   };
-
+  const queryClient = useQueryClient();
+  const { mutateAsync, isLoading: isMutating } = useMutation(
+    customerApi.remove,
+    {},
+  );
+  let { data, error, isLoading, isError } = useQuery(
+    "customers",
+    async () => {
+      return await customerApi.getAll();
+    },
+    {
+      onError: (err) => {
+        handleError(err);
+        history.push("login");
+      },
+    },
+  );
   //Selector
-  const loading = useAppSelector(selectCustomerLoading) || false;
-  const listCustomer = useAppSelector(selectCustomers);
-  console.log(listCustomer);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(customerActions.setCustomerSlice({}));
-    dispatch({ type: GET_CUSTOMERS });
   }, []);
   const onAdd = () => {
     dispatch(customerActions.setCustomerSlice({}));
@@ -127,8 +142,9 @@ const CustomerTable = () => {
             okType="danger"
             title="Are you sure？"
             icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-            onConfirm={() => {
-              dispatch({ type: DELETE_CUSTOMER_BY_ID, payload: record.id });
+            onConfirm={async () => {
+              await mutateAsync(record.id as string);
+              queryClient.invalidateQueries("customers");
             }}
           >
             <Button type="primary" danger>
@@ -162,9 +178,9 @@ const CustomerTable = () => {
       </Row>
 
       <Table
-        loading={loading}
+        loading={isLoading || isMutating}
         columns={columns}
-        dataSource={listCustomer}
+        dataSource={data}
         pagination={{
           position: ["bottomCenter"],
           pageSize: 5,

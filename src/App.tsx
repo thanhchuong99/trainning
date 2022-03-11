@@ -23,7 +23,7 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginForm />}></Route>
-      <Route path="/" element={<PrivateRoute />}>
+      <Route element={<PrivateRoute />}>
         <Route path="/" element={<AdminLayout />}>
           <Route path="todo" element={<TodoApp />}></Route>
           <Route path="customers" element={<CustomerTable />}></Route>
